@@ -11,28 +11,12 @@ import google.generativeai as genai
 genai.configure(api_key=os.environ["GEMINI_API_KEY"])
 
 model = "models/gemini-embedding-001"
+# Load precomputed vectors and chunks
+vectors = np.load("vectors.npy")
+with open("chunks.pkl", "rb") as f:
+    chunks = pickle.load(f)
 
-folder = "/content/drive/MyDrive/repo"
-
-def load_and_chunk(folder, chunk_size=900):
-    chunks = []
-    for fname in os.listdir(folder):
-        if fname.endswith(".txt"):
-            with open(os.path.join(folder, fname), "r", encoding="utf-8") as f:
-                text = f.read()
-            for i in range(0, len(text), chunk_size):
-                chunk = text[i:i+chunk_size]
-                chunks.append({"file": fname, "chunk": i//chunk_size, "text": chunk})
-    return chunks
-
-chunks = load_and_chunk(folder)
-
-embeddings = []
-for c in chunks:
-    e = genai.embed_content(model=model, content=c["text"])
-    embeddings.append(e['embedding'])
-
-vectors = np.array(embeddings).astype("float32")
+# Build FAISS index
 dimension = len(vectors[0])
 index = faiss.IndexFlatL2(dimension)
 index.add(vectors)
