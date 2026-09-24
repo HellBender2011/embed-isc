@@ -5,8 +5,11 @@ import faiss
 import os
 
 # Configure Gemini
-from google.colab import userdata
-genai.configure(api_key=userdata.get('geminikey'))
+import os
+import google.generativeai as genai
+
+genai.configure(api_key=os.environ["GEMINI_API_KEY"])
+
 model = "models/gemini-embedding-001"
 
 folder = "/content/drive/MyDrive/repo"
