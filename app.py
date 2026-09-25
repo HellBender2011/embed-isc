@@ -1,16 +1,13 @@
 import streamlit as st
 import google.generativeai as genai
 import numpy as np
+import pickle
 import faiss
 import os
 
-# Configure Gemini
-import os
-import google.generativeai as genai
-
 genai.configure(api_key=os.environ["GEMINI_API_KEY"])
-
 model = "models/gemini-embedding-001"
+
 # Load precomputed vectors and chunks
 vectors = np.load("vectors.npy")
 with open("chunks.pkl", "rb") as f:
@@ -21,6 +18,7 @@ dimension = len(vectors[0])
 index = faiss.IndexFlatL2(dimension)
 index.add(vectors)
 
+# Streamlit UI
 st.title("📚 Facts Repository Search")
 
 query = st.text_input("Ask a question:")
