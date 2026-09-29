@@ -8,7 +8,7 @@ from google import genai
 from google.genai import types
 
 EMBED_MODEL = "gemini-embedding-001"
-CHAT_MODEL = "gemini-2.5-flash"
+CHAT_MODEL = "gemini-3.8-flash"
 TOP_K = 6
 
 # Set to the task type you used when you created vectors.npy.
