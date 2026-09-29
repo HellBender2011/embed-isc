@@ -1,4 +1,4 @@
 streamlit
 numpy
 faiss-cpu
-google-generativeai
+google-genai
